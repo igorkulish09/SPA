@@ -1,0 +1,12 @@
+<h2>Leave a comment</h2>
+
+<form method="post" action="{% url 'add_comment' %}" id="replyCommentForm">
+    {% csrf_token %}
+    {{ form.user_name.label_tag }} {{ form.user_name }}<br>
+    {{ form.email.label_tag }} {{ form.email }}<br>
+    {{ form.text.label_tag }} {{ form.text }}<br>
+    {{ form.captcha }}
+
+    <input type="hidden" id="parentCommentId" name="parent_comment_id" value="">
+    <button type="submit">Submit Reply</button>
+</form>

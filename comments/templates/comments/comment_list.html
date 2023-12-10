@@ -1,0 +1,31 @@
+
+{% for comment in comments %}
+    
+  <div>
+    {{ comment.user_name }} - {{ comment.created_at }}
+    <p>{{ comment.text }}</p>
+    <a href="{% url 'add_reply' parent_id=comment.id %}">Reply</a>
+  </div>
+{% endfor %}
+
+<div class="pagination center-text">
+    <span class="step-links">
+        {% if comments.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ comments.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ comments.number }} of {{ comments.paginator.num_pages }}.
+        </span>
+
+        {% if comments.has_next %}
+            <a href="?page={{ comments.next_page_number }}">next</a>
+            <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+<a href="{% url 'add_comment' %}" class="center-text">Add comment</a>
+
+
