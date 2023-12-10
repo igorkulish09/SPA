@@ -23,3 +23,4 @@ EXPOSE 8000
 
 # Запускаємо Django-додаток при старті контейнера
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+

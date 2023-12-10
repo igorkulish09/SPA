@@ -1,4 +1,7 @@
 asgiref==3.7.2
+captcha==0.5.0
 Django==5.0
+django-recaptcha==4.0.0
+Pillow==10.1.0
 sqlparse==0.4.4
 typing_extensions==4.9.0
