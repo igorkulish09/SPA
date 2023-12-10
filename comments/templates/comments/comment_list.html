@@ -1,11 +1,19 @@
-
+{% load static %}
 {% for comment in comments %}
+    <link rel="stylesheet" href="{% static 'css/comments.css' %}">
+    <div class="comment">
+        {{ comment.user_name }} - {{ comment.created_at }}<br>
+        {{ comment.text }}<br>
+        <a href="{% url 'add_reply' parent_comment_id=comment.id %}">Reply</a>
     
-  <div>
-    {{ comment.user_name }} - {{ comment.created_at }}
-    <p>{{ comment.text }}</p>
-    <a href="{% url 'add_reply' parent_id=comment.id %}">Reply</a>
-  </div>
+        {% for reply in comment.replies.all %}
+            <div class="reply">
+                {{ reply.user_name }} - {{ reply.created_at }}<br>
+                {{ reply.text }}<br>
+                <a href="{% url 'add_reply' parent_comment_id=reply.parent_comment.id %}">Reply</a>
+            </div>
+        {% endfor %}
+    </div>
 {% endfor %}
 
 <div class="pagination center-text">
@@ -29,3 +37,4 @@
 <a href="{% url 'add_comment' %}" class="center-text">Add comment</a>
 
 
+<script src="{% static 'js/comments.js' %}"></script>

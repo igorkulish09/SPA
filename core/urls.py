@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from comments.views import comment_list
+from django.views.generic import RedirectView
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='comments/', permanent=True)),
     path('admin/', admin.site.urls),
-    path('comments/', comment_list, name='comment_list'),
+    path('comments/', include('comments.urls')),
 ]

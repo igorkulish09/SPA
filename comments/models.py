@@ -6,6 +6,6 @@ class Comment(models.Model):
     email = models.EmailField()
     captcha = models.CharField(max_length=10)
     text = models.TextField()
-    parent_comment = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
+    parent_comment = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 

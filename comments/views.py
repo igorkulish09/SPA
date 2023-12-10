@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Comment
 from .forms import CommentForm
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
+from django.core.paginator import  Paginator, EmptyPage, PageNotAnInteger
 
 
 def comment_list(request):
@@ -28,15 +28,36 @@ def add_comment(request, parent_comment_id=None):
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.parent_comment = parent_comment
+            comment.parent_comment = parent_comment  # Используем поле parent_comment для ответов
             comment.save()
-
-            # Вернуть JSON-ответ с информацией об успехе
             return JsonResponse({'success': True})
         else:
-            # Вернуть JSON-ответ с информацией об ошибках валидации формы
             return JsonResponse({'success': False, 'errors': form.errors})
     else:
         form = CommentForm()
 
     return render(request, 'comments/add_comment.html', {'form': form})
+
+def add_reply(request, parent_comment_id=None):
+    parent_comment = None
+
+    if parent_comment_id:
+        try:
+            parent_comment = Comment.objects.get(pk=parent_comment_id)
+        except Comment.DoesNotExist:
+            return JsonResponse({'success': False, 'errors': 'Parent comment not found'})
+
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.parent_comment = parent_comment  # Используем поле parent_comment для ответов
+            comment.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+    else:
+        form = CommentForm()
+
+    return render(request, 'comments/add_reply.html', {'form': form, 'parent_comment': parent_comment})
